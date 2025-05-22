@@ -1,0 +1,18 @@
+{
+  "name": "discord-bot---nebula-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^14.18.0",
+    "dotenv": "^16.5.0",
+    "mysql2": "^3.14.0",
+    "node-schedule": "^2.1.1"
+  }
+}
