@@ -7,7 +7,8 @@ const {
     PermissionFlagsBits,
     ModalBuilder,
     TextInputBuilder,
-    TextInputStyle
+    TextInputStyle,
+    MessageFlags
   } = require('discord.js');
   
   module.exports = {
@@ -41,13 +42,13 @@ const {
       await interaction.reply({
         content: '🧱 Embed Builder Started! Use the buttons below to build your embed:',
         components: [row1, row2],
-        ephemeral: true,
+        flags: MessageFlags.Ephemeral,
       });
     },
   
     handleButtonInteraction: async (interaction) => {
       const session = interaction.client.embedSessions?.[interaction.user.id];
-      if (!session) return interaction.reply({ content: '⚠️ No active embed session found.', ephemeral: true });
+      if (!session) return interaction.reply({ content: '⚠️ No active embed session found.', flags: MessageFlags.Ephemeral });
   
       const updateField = (key, value) => {
         session.embedData[key] = value;
@@ -87,7 +88,7 @@ const {
         if (data.thumbnail) embed.setThumbnail(data.thumbnail);
         if (data.footer) embed.setFooter({ text: data.footer });
   
-        return interaction.reply({ content: 'Here is your preview:', embeds: [embed], ephemeral: true });
+        return interaction.reply({ content: 'Here is your preview:', embeds: [embed], flags: MessageFlags.Ephemeral });
       }
   
       // Send embed
@@ -105,26 +106,26 @@ const {
         const channel = await interaction.client.channels.fetch(session.channel);
         await channel.send({ embeds: [embed] });
         delete interaction.client.embedSessions[interaction.user.id];
-        return interaction.reply({ content: '✅ Embed sent!', ephemeral: true });
+        return interaction.reply({ content: '✅ Embed sent!', flags: MessageFlags.Ephemeral });
       }
   
       // Cancel session
       if (customId === 'cancel_embed') {
         delete interaction.client.embedSessions[interaction.user.id];
-        return interaction.reply({ content: '❌ Embed building canceled.', ephemeral: true });
+        return interaction.reply({ content: '❌ Embed building canceled.', flags: MessageFlags.Ephemeral });
       }
     },
   
     handleModalSubmit: async (interaction) => {
       const session = interaction.client.embedSessions?.[interaction.user.id];
-      if (!session) return interaction.reply({ content: '⚠️ No active embed session found.', ephemeral: true });
+      if (!session) return interaction.reply({ content: '⚠️ No active embed session found.', flags: MessageFlags.Ephemeral });
   
       const [baseId] = interaction.customId.split('_modal');
       const field = baseId.replace('set_', '');
       const value = interaction.fields.getTextInputValue(`${baseId}_input`);
       session.embedData[field] = value;
   
-      await interaction.reply({ content: `✅ ${field} updated!`, ephemeral: true });
+      await interaction.reply({ content: `✅ ${field} updated!`, flags: MessageFlags.Ephemeral });
     }
   };
   
