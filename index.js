@@ -1,5 +1,5 @@
 // index.js
-const { Client, GatewayIntentBits, Partials, Collection, Events, ActivityType } = require('discord.js');
+const { Client, GatewayIntentBits, Partials, Collection, Events, ActivityType, MessageFlags } = require('discord.js');
 const dotenv = require('dotenv');
 const fs = require('fs');
 const path = require('path');
@@ -8,6 +8,7 @@ const loadCommands = require('./handlers/commandLoader');
 const deployCommands = require('./handlers/deployCommands');
 const sendStartupMessage = require('./handlers/startupMessage');
 const sendShutdownMessage = require('./handlers/shutdownMessage');
+const db = require('./db');
 
 dotenv.config();
 
@@ -45,7 +46,7 @@ client.once(Events.ClientReady, async () => {
   await deployCommands(client);
 
   for (const [guildId] of client.guilds.cache) {
-    await sendStartupMessage(client, guildId);
+    await sendStartupMessage(client, guildId, db);
   }
 });
 
